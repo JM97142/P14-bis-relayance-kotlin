@@ -6,7 +6,7 @@ Feature: Add a new customer
   Scenario: Successfully add a customer
     Given I launch the application
     And I am on the customer list
-    When I click on the "Add a customer" button
+    When I click on the add customer button
     And I enter the name "John Doe"
     And I enter the email "frank@example.com"
     And I submit the form

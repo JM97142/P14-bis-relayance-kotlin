@@ -5,7 +5,10 @@ import com.android.build.gradle.BaseExtension
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
     id("jacoco")
+    id("kotlin-parcelize")
 }
 tasks.withType<Test> {
     extensions.configure(JacocoTaskExtension::class) {
@@ -121,4 +124,8 @@ dependencies {
     androidTestImplementation(libs.cucumber.picocontainer)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.hilt)
+    implementation(libs.lifecycle.viewmodel.savedstate.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.hilt.navigation.compose)
 }

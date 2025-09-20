@@ -2,8 +2,16 @@ package com.kirabium.relayance.domain.model
 
 import java.util.Calendar
 import java.util.Date
+import kotlinx.parcelize.Parcelize
+import android.os.Parcelable
 
-data class Customer(val id: Int, val name: String, val email: String, val createdAt: Date) {
+@Parcelize
+data class Customer(
+    val id: Int,
+    val name: String,
+    val email: String,
+    val createdAt: Date
+) : Parcelable {
     fun isNewCustomer(): Boolean {
         val today = Calendar.getInstance()
         val createdAtCalendar = Calendar.getInstance().apply {
