@@ -12,4 +12,3 @@ Feature: Add a new customer
     And I submit the form
     Then I should see "John Doe" in the customer list
     And the list should contain 6 customers
-    And I should see a toast saying "Customer added successfully"

@@ -27,7 +27,6 @@ android {
     defaultConfig {
         applicationId = "com.kirabium.relayance"
         minSdk = 24
-        //noinspection EditedTargetSdkVersion
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -75,25 +74,35 @@ android {
 val androidExtension = extensions.getByType<BaseExtension>()
 
 val jacocoTestReport by tasks.registering(JacocoReport::class) {
-    dependsOn("testDebugUnitTest", "createDebugCoverageReport")
+    dependsOn("connectedDebugAndroidTest") // tests instrumentés
+
     group = "Reporting"
-    description = "Generate Jacoco coverage reports"
+    description = "Generate Jacoco coverage reports for instrumented tests"
 
     reports {
         xml.required.set(true)
         html.required.set(true)
     }
 
-    val debugTree = fileTree("${buildDir}/tmp/kotlin-classes/debug")
+    val fileFilter = listOf(
+        "**/*Test*.*",
+        "android/**/*.*"
+    )
+
+    val debugTree = fileTree("${buildDir}/tmp/kotlin-classes/debug") {
+        exclude(fileFilter)
+    }
     val mainSrc = androidExtension.sourceSets.getByName("main").java.srcDirs
 
     classDirectories.setFrom(debugTree)
     sourceDirectories.setFrom(files(mainSrc))
     executionData.setFrom(fileTree(buildDir) {
-        include("**/*.exec", "**/*.ec")
+        include(
+            "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
+            "outputs/code_coverage/debugAndroidTest/connected/*coverage.ec"
+        )
     })
 }
-
 
 dependencies {
 

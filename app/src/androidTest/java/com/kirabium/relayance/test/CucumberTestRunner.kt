@@ -11,29 +11,19 @@ import java.io.File
     plugin = ["pretty"]
 )
 class CucumberTestRunner : CucumberAndroidJUnitRunner() {
-    override fun onCreate(bundle: Bundle) {
-        bundle.putString(
-            "plugin", pluginConfigurationString
-        )
 
+    override fun onCreate(bundle: Bundle) {
+        // On injecte dynamiquement la config des plugins
+        bundle.putString("plugin", pluginConfigurationString)
         File(absoluteFilesPath).mkdirs()
         super.onCreate(bundle)
     }
 
     private val pluginConfigurationString: String
-        get() {
-            val cucumber = "cucumber"
-            val separator = "--"
-            return "junit:" + cucumber.getCucumberXml() + separator + "html:" + cucumber.getCucumberHtml()
-        }
-
-    private fun String.getCucumberHtml(): String {
-        return "$absoluteFilesPath/$this.html"
-    }
-
-    private fun String.getCucumberXml(): String {
-        return "$absoluteFilesPath/$this.xml"
-    }
+        get() = listOf(
+            "pretty",
+            "html:${absoluteFilesPath}/cucumber.html"
+        ).joinToString(", ")
 
     private val absoluteFilesPath: String
         get() {

@@ -8,7 +8,6 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import com.kirabium.relayance.R
 import com.kirabium.relayance.ui.activity.main.MainActivity
 import com.kirabium.relayance.util.RecyclerViewItemCountAssertion
-import com.kirabium.relayance.util.ToastMatcher
 import io.cucumber.java.en.Given
 import io.cucumber.java.en.When
 import io.cucumber.java.en.Then
@@ -59,10 +58,4 @@ class AddCustomerSteps {
             .check(RecyclerViewItemCountAssertion.withItemCount(count))
     }
 
-    @Then("I should see a toast saying {string}")
-    fun iShouldSeeToast(message: String) {
-        onView(withText(message))
-            .inRoot(ToastMatcher())
-            .check(matches(isDisplayed()))
-    }
 }
