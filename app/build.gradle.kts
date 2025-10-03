@@ -74,33 +74,22 @@ android {
 val androidExtension = extensions.getByType<BaseExtension>()
 
 val jacocoTestReport by tasks.registering(JacocoReport::class) {
-    dependsOn("connectedDebugAndroidTest") // tests instrumentés
-
+    dependsOn("testDebugUnitTest", "createDebugCoverageReport")
     group = "Reporting"
-    description = "Generate Jacoco coverage reports for instrumented tests"
+    description = "Generate Jacoco coverage reports"
 
     reports {
         xml.required.set(true)
         html.required.set(true)
     }
 
-    val fileFilter = listOf(
-        "**/*Test*.*",
-        "android/**/*.*"
-    )
-
-    val debugTree = fileTree("${buildDir}/tmp/kotlin-classes/debug") {
-        exclude(fileFilter)
-    }
+    val debugTree = fileTree("${buildDir}/tmp/kotlin-classes/debug")
     val mainSrc = androidExtension.sourceSets.getByName("main").java.srcDirs
 
     classDirectories.setFrom(debugTree)
     sourceDirectories.setFrom(files(mainSrc))
     executionData.setFrom(fileTree(buildDir) {
-        include(
-            "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
-            "outputs/code_coverage/debugAndroidTest/connected/*coverage.ec"
-        )
+        include("**/*.exec", "**/*.ec")
     })
 }
 

@@ -12,3 +12,5 @@ Feature: Add a new customer
     And I submit the form
     Then I should see "John Doe" in the customer list
     And the list should contain 6 customers
+    When I click on the customer "John Doe"
+    Then I should see the detail screen for "John Doe" with email "frank@example.com"
